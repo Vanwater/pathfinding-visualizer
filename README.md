@@ -1,67 +1,31 @@
-# Pathfinding Visualizer (Unity)
+# 寻路算法可视化（Unity）
 
-Interactive visualization of 8 classic pathfinding / graph algorithms on a 16×16 grid map,
-built with **Unity (URP)** + TextMeshPro.
+Unity URP 实现的 16×16 网格寻路演示，支持 8 种图搜索算法。
 
-![Platform](https://img.shields.io/badge/Unity-2022%2B-333333) ![Algorithms](https://img.shields.io/badge/algorithms-8-blue)
+## 功能
 
----
+- 算法：BFS、DFS、Greedy、Dijkstra、A*、双向 BFS、Floyd-Warshall、Bellman-Ford
+- 网格编辑：放置起点/终点/障碍，长按画墙，二次扫过擦除
+- 地形权值：每格可调 -5 ~ +5，数字显示权值，颜色随权值变深
+- 搜索过程逐步动画，方块波浪式起伏，动态显示当前距离
+- 支持负权图：Dijkstra/A* 失效，Floyd 仍正确，Bellman-Ford 检测负环
+- 音效：挖矿/经验/按钮/泥土四类（原版 MC 音效）
+- Info 面板：路径长度、总代价、访问节点数、步数、搜索耗时
+- Clear 清除搜索痕迹（保留布局），Restart 完全重置
 
-## ✨ Features
+## 操作
 
-- **8 algorithms** with per-step animation:
-  BFS · DFS · Greedy Best-First · Dijkstra · A* · Bidirectional BFS · Floyd-Warshall · Bellman-Ford
-- **Grid editor**: place start / end / obstacles by raycast; long-press to paint walls, second pass erases
-- **Terrain cost**: raise / lower each cell's cost (−5 … +5); cost shown in black labels, cells shaded darker as they get more expensive
-- **Visualization**: visited cells rise with a wave-like animation, live distance numbers spread during search (white), final path numbered 1..N with total **cost** and **search time** shown in the info panel
-- **Negative weights support**: Dijkstra / A* fail (greedy assumption broken), Floyd stays correct without negative cycles, Bellman-Ford detects the negative cycle and reports it
-- **Sound**: original Minecraft SFX mapped to search / path trace / button / wall-paint events
-- **Controls**: Clear (keep start/end/weights, remove search traces) and Restart (full reset)
+- 右侧工具按钮：起点、终点、障碍、加权、减权、运行
+- 左侧算法按钮或数字键 1~8 切换算法
+- 空格键运行搜索
 
-## 🎮 Controls
+## 运行
 
-| Input | Action |
-|---|---|
-| Click right tool cube | choose tool (Start / End / Obstacle / Weight+ / Weight− / Run) |
-| Click left algorithm cube | choose algorithm (or press **1–8**) |
-| **Space** | run search |
-| Left-drag on grid | paint obstacles / adjust weights |
-| Clear / Restart buttons | clean search traces / full reset |
+Unity 2022+ 打开项目，打开 `Assets/Scenes/Main.unity`，点 Play。
 
-Algorithm hotkeys: `1`=BFS `2`=DFS `3`=Greedy `4`=Dijkstra `5`=A* `6`=Bi-BFS `7`=Floyd `8`=Bellman-Ford
+## 目录
 
-## 🧠 Algorithm notes
-
-| Algorithm | Strategy | Optimal? | Handles negative weights? |
-|---|---|---|---|
-| BFS | level order | yes (unweighted) | — |
-| DFS | depth first | no | — |
-| Greedy Best-First | h(n) only | no | — |
-| Dijkstra | g(n) only | yes | **no** |
-| A* | g(n)+h(n) | yes (consistent h) | **no** |
-| Bidirectional BFS | both ends meet | yes | — |
-| Floyd-Warshall | all-pairs DP | yes | yes (no neg. cycle) |
-| Bellman-Ford | relax V−1 rounds | yes | yes + detects neg. cycle |
-
-## 🚀 How to run
-
-1. Unity **2022+** (URP template recommended)
-2. Open the project folder, open scene `Assets/Scenes/Main.unity`
-3. Press **Play**, paint a map and run an algorithm
-
-## 🗂 Project structure
-
-```
-Assets/
-├── Scripts/
-│   ├── GridMap.cs           # grid build, node states, cost/color/material logic, wave animation
-│   └── DemoController.cs    # tools, input, 8 search algorithms, info panel, audio
-├── Audio/                   # minecraft-style SFX (dig/stone, orb, click, dig/grass)
-├── Materials/               # state materials (idle/start/end/obstacle/visited/frontier/path)
-├── Prefabs/                 # cell prefab (cube + TextMeshPro label)
-└── Scenes/Main.unity        # main demo scene
-```
-
-## ⚖️ License
-
-Educational demo project. Minecraft sound effects belong to Mojang / Microsoft and are used here for learning purposes only.
+- `Assets/Scripts/GridMap.cs`：网格构建、节点状态、权值颜色、起伏动画
+- `Assets/Scripts/DemoController.cs`：交互、输入、八个算法、信息面板、音效
+- `Assets/Audio`：MC 音效资源
+- `Assets/Materials`：各状态材质
